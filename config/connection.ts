@@ -19,12 +19,13 @@ export async function runDbConnection() {
         await client.db("admin").command({ping: 1});
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
         db = client.db()
-    } finally {
-        await client.close();
+    } catch (err) {
+        console.error("Failed to connect to MongoDB:", err);
+        throw err;
     }
 }
 
-export async function getDb() {
+export function getDb() {
     if(!db) {
         throw new Error('Must connect to MongoDB before calling this function');
     }
